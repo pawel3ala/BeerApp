@@ -15,3 +15,7 @@ export type TabOneParamList = {
 export type TabTwoParamList = {
   TabTwoScreen: undefined;
 };
+
+export interface BeerItem {
+  name: string
+}
