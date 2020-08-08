@@ -11,7 +11,8 @@ export default function TabOneScreen() {
   type Item = {
     name: string,
     image_url: string,
-    description: string,
+    ibu: number,
+    abv: number,
     id: string
   }
 
@@ -19,7 +20,8 @@ export default function TabOneScreen() {
     return <ListItem
       name={item.name}
       image_url={item.image_url}
-      description={item.description}
+      ibu={item.ibu}
+      abv={item.abv}
     />
   }
 

@@ -5,24 +5,28 @@ import { StyleSheet, TouchableOpacity } from 'react-native';
 import Colors from '../constants/Colors';
 import { MonoText } from './StyledText';
 import { Text, View } from './Themed';
-import { Card } from 'react-native-elements'
+import { Card, Button } from 'react-native-elements'
 
 type listItemProps = {
     name: string,
     image_url: string,
-    description: string
+    ibu: number,
+    abv: number
 }
 
-export default function ListItem({ name, image_url, description }: listItemProps) {
+export default function ListItem({ name, image_url, ibu, abv }: listItemProps) {
     return (
         <View>
             <Card
                 title={name}
                 image={{ uri: image_url }}
             >
-                <Text style={{ marginBottom: 10 }}>
-                    {description}
-                </Text>
+                <Text style={{ marginBottom: 1 }}>{ibu}</Text>
+                <Text style={{ marginBottom: 1 }}>{abv}</Text>
+                <Button
+                    title='Details'
+                />
+
             </Card >
         </View >
     );
