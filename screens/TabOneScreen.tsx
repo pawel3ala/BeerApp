@@ -22,8 +22,11 @@ export default function TabOneScreen() {
   }, [])
 
   const onPress = (item: any) => {
-    axios.get<BeerItem>(`https://api.punkapi.com/v2/beers/1`).then(response => setBeer(response.data))
-    setVisibility(true)
+    axios.get<BeerItem>(`https://api.punkapi.com/v2/beers/1`)
+    .then(response => setBeer(response.data))
+    .then(()=> setVisibility(true))
+    .then(()=>console.log(beer))
+    .catch(err => console.error(err))
   }
 
   const renderItem = ({ item }: { item: BeerItem }) => {
@@ -46,8 +49,8 @@ export default function TabOneScreen() {
       />
       <Modal isVisible={isVisible}>
         <View>
-          <Text>Modal is open!</Text>
-          <Button title="Click To Close Modal" onPress={() => setVisibility(false)} />
+          {beer && <Text>{beer.name}</Text>}
+          <Button title="Click To Close Modal" onPress={() => setVisibility(!isVisible)} />
         </View>
       </Modal>
     </View>
