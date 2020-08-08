@@ -3,8 +3,20 @@ import { StyleSheet } from 'react-native';
 
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
+import { fetchAllBeers } from '../store/reducers/beers'
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import {store} from '../store/configureStore'
+
 
 export default function TabOneScreen() {
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchAllBeers());
+  }, [])
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Tab One</Text>
