@@ -1,6 +1,10 @@
 import * as React from 'react';
 import { StyleSheet, FlatList } from 'react-native';
 import { Text, View } from '../components/Themed';
+import { fetchAllBeers } from '../store/reducers/beers'
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import {store} from '../store/configureStore'
 
 import ListItem from '../components/ListItem';
 import { useState, useEffect } from 'react';
@@ -13,12 +17,9 @@ export default function TabOneScreen() {
 
   const [isVisible, setVisibility] = useState(false)
   const [beer, setBeer] = useState<BeerItem | null>(null)
-  const [beerList, setBeerList] = useState<BeerItem[]>([])
+  const dispatch = useDispatch();
   useEffect(() => {
-    const fetchBeers = () => {
-      axios.get<BeerItem[]>('https://api.punkapi.com/v2/beers').then(response => setBeerList(response.data))
-    }
-    fetchBeers()
+    dispatch(fetchAllBeers());
   }, [])
 
   const onPress = (item: any) => {
@@ -43,7 +44,7 @@ export default function TabOneScreen() {
   return (
     <View style={styles.container}>
       <FlatList
-        data={beerList}
+        data={storage.getState()}
         renderItem={renderItem}
         keyExtractor={(item => item.id.toString())}
       />
