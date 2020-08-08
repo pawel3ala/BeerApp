@@ -5,43 +5,51 @@ import { Text, View } from '../components/Themed';
 import ListItem from '../components/ListItem';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { BeerItem } from '../types'
+import Modal from 'react-native-modal';
+import { Button } from 'react-native-elements'
 
 export default function TabOneScreen() {
 
-  type Item = {
-    name: string,
-    image_url: string,
-    ibu: number,
-    abv: number,
-    id: string
+  const [isVisible, setVisibility] = useState(false)
+  const [beer, setBeer] = useState<BeerItem | null>(null)
+  const [beerList, setBeerList] = useState<BeerItem[]>([])
+  useEffect(() => {
+    const fetchBeers = () => {
+      axios.get<BeerItem[]>('https://api.punkapi.com/v2/beers').then(response => setBeerList(response.data))
+    }
+    fetchBeers()
+  }, [])
+
+  const onPress = (item: any) => {
+    axios.get<BeerItem>(`https://api.punkapi.com/v2/beers/1`).then(response => setBeer(response.data))
+    setVisibility(true)
   }
 
-  const renderItem = ({ item }: { item: Item }) => {
+  const renderItem = ({ item }: { item: BeerItem }) => {
     return <ListItem
       name={item.name}
       image_url={item.image_url}
       ibu={item.ibu}
       abv={item.abv}
+      id={item.id}
+      onPress={(item: any) => onPress(item)}
     />
   }
-
-  const [beerList, setBeerList] = useState<Item[]>([])
-
-  useEffect(() => {
-    const fetchBeers = () => {
-      axios.get<Item[]>('https://api.punkapi.com/v2/beers').then(response => setBeerList(response.data))
-    }
-    fetchBeers()
-
-  }, [])
 
   return (
     <View style={styles.container}>
       <FlatList
         data={beerList}
         renderItem={renderItem}
-        keyExtractor={(item=> item.id.toString())}
+        keyExtractor={(item => item.id.toString())}
       />
+      <Modal isVisible={isVisible}>
+        <View>
+          <Text>Modal is open!</Text>
+          <Button title="Click To Close Modal" onPress={() => setVisibility(false)} />
+        </View>
+      </Modal>
     </View>
   );
 }

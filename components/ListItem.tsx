@@ -1,20 +1,23 @@
 import * as WebBrowser from 'expo-web-browser';
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 
 import Colors from '../constants/Colors';
-import { MonoText } from './StyledText';
 import { Text, View } from './Themed';
 import { Card, Button } from 'react-native-elements'
+
 
 type listItemProps = {
     name: string,
     image_url: string,
     ibu: number,
-    abv: number
+    abv: number,
+    id: number,
+    onPress: Function
 }
 
-export default function ListItem({ name, image_url, ibu, abv }: listItemProps) {
+export default function ListItem({ name, image_url, ibu, abv, id, onPress }: listItemProps) {
+
     return (
         <View>
             <Card
@@ -25,8 +28,8 @@ export default function ListItem({ name, image_url, ibu, abv }: listItemProps) {
                 <Text style={{ marginBottom: 1 }}>{abv}</Text>
                 <Button
                     title='Details'
+                    onPress={() => onPress()}
                 />
-
             </Card >
         </View >
     );
