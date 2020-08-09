@@ -3,10 +3,13 @@ import thunk from "redux-thunk";
 
 import beersReducer from "./reducers/beers";
 import filtersReducer from "./reducers/filters";
+import selectedBeersReducer from "./reducers/selectedBeer";
+
 
 export const rootReducer = combineReducers({
     beers: beersReducer,
-    filtersReducer
+    filtersReducer,
+    selectedBeersReducer
 });
 
 export type AppState = ReturnType<typeof rootReducer>
