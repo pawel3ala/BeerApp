@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { StyleSheet, FlatList } from 'react-native';
 import { Text, View } from '../components/Themed';
-import { fetchAllBeers } from '../store/reducers/beers'
+import { fetchAllBeers, fetchMoreBeers } from '../store/reducers/beers'
 import { useDispatch } from 'react-redux';
 import {store} from '../store/configureStore'
 
@@ -15,12 +15,16 @@ import { Button } from 'react-native-elements'
 export default function TabOneScreen() {
 
   const [isVisible, setVisibility] = useState(false)
+  const [page, setPage] = useState(1)
   const [beer, setBeer] = useState<BeerItem | null>(null)
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchAllBeers());
-  }, [])
+    console.log(page)
+    if (page == 1) dispatch(fetchAllBeers());
+    else dispatch(fetchMoreBeers(page));
+    console.log(store.getState().beers.length)
+  }, [page])
 
   const onPress = (item: any) => {
     axios.get<BeerItem>(`https://api.punkapi.com/v2/beers/1`)
@@ -40,12 +44,19 @@ export default function TabOneScreen() {
     />
   }
 
+  const loadMoreBeers = () => {
+    setPage(previousPage => previousPage + 1)
+  }
+
   return (
     <View style={styles.container}>
       <FlatList
         data={store.getState().beers}
+        // extraData={page}
         renderItem={renderItem}
         keyExtractor={(item => item.id.toString())}
+        onEndReachedThreshold={0.9}
+        onEndReached={loadMoreBeers}
       />
       <Modal isVisible={isVisible}>
         <View>
