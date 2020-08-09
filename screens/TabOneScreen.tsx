@@ -50,6 +50,10 @@ export default function TabOneScreen() {
 
   return (
     <View style={styles.container}>
+              <Button
+          title='poka'
+          onPress={() => { console.log(store.getState().filtersReducer) }}
+        />
       <FlatList
         data={store.getState().beers}
         // extraData={page}

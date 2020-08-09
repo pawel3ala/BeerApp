@@ -5,9 +5,14 @@ import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import { Button, Input } from 'react-native-elements'
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { clearFilters, setFilters } from '../store/reducers/filters'
+import { FiltersConfigObject} from '../types'
 
 export default function TabTwoScreen(props: any) {
+
   const { navigation } = props
+  const dispatch = useDispatch();
 
   const [abv_min, setAbv_min] = useState<String | null>(null)
   const [abv_max, setAbv_max] = useState<String | null>(null)
@@ -19,7 +24,16 @@ export default function TabTwoScreen(props: any) {
       <ScrollView>
         <Button
           title='Apply filter'
-          onPress={() => { navigation.navigate('TabOneScreen') }}
+          onPress={() => {
+            const filterObj: FiltersConfigObject= {
+              abv_min: Number(abv_min),
+              abv_max: Number(abv_max),
+              ibu_min: Number(ibu_min),
+              ibu_max: Number(ibu_max),
+            }
+            dispatch(setFilters(filterObj))
+            navigation.navigate('TabOneScreen')
+          }}
         />
         <Button
           title='Clear all filters'
@@ -28,6 +42,7 @@ export default function TabTwoScreen(props: any) {
             setAbv_max(null)
             setIbu_min(null)
             setIbu_max(null)
+            dispatch(clearFilters())
             navigation.navigate('TabOneScreen')
           }}
 

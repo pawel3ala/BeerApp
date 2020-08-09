@@ -33,13 +33,11 @@ const setMoreBeers = (beers: BeerItem[]): SetMoreBeersAction => ({
 
 let filtersURLString = ""
 
-
 const applyFilters = () => {
-  filtersURLString += "&abv_gt=0"
-  filtersURLString += "&abv_lt=110"
-  filtersURLString += "&ibu_gt=0"
-  filtersURLString += "&ibu_lt=110"
-
+  // filtersURLString += "&abv_gt=0"
+  // filtersURLString += "&abv_lt=110"
+  // filtersURLString += "&ibu_gt=0"
+  // filtersURLString += "&ibu_lt=110"
 }
 
 export const fetchAllBeers = () => {
@@ -58,7 +56,8 @@ export const fetchAllBeers = () => {
 export const fetchMoreBeers = (pageNumber: number) => {
   return async (dispatch: Dispatch) => {
     try {
-      const { data } = await axios.get(`https://api.punkapi.com/v2/beers?page=${pageNumber.toString()}&per_page=${pagesPerPage.toString()}`)
+      applyFilters()
+      const { data } = await axios.get(`https://api.punkapi.com/v2/beers?page=${pageNumber.toString()}&per_page=${pagesPerPage.toString()}${filtersURLString}`)
       dispatch(setMoreBeers(data))
     } catch (err) {
       console.error(err)
