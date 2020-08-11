@@ -1,7 +1,5 @@
 import { FiltersConfigObject } from '../../types'
 import axios from 'axios'
-import { Dispatch } from 'redux'
-import { store } from '../configureStore';
 
 const filtersReducerDefaultState: FiltersConfigObject = {
     abv_min: null,

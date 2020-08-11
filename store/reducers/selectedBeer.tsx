@@ -1,7 +1,6 @@
 import { BeerItem } from '../../types'
 import axios from 'axios'
 import { Dispatch } from 'redux'
-import { store } from '../configureStore';
 
 const selectedBeerReducerDefaultState: never[] = [];
 
@@ -18,6 +17,17 @@ export const setSingleBeer = (beer: BeerItem): SelectedBeerActionTypes => ({
     type: SET_SELECTED_BEER,
     beer
 })
+
+export const fetchSingleBeer = (beerId: number) => {
+    return async (dispatch: Dispatch) => {
+        try {
+            const { data } = await axios.get(`https://api.punkapi.com/v2/beers/${beerId.toString()}`)
+            dispatch(setSingleBeer(data))
+        } catch (err) {
+            console.error(err)
+        }
+    }
+}
 
 const selectedBeersReducer = (state = selectedBeerReducerDefaultState, action: SelectedBeerActionTypes) => {
     switch (action.type) {

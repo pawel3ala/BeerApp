@@ -1,7 +1,6 @@
 import { BeerItem } from '../../types'
 import axios from 'axios'
 import { Dispatch } from 'redux'
-import { store } from '../configureStore';
 
 const pagesPerPage: number = 12;
 const beersReducerDefaultState: BeerItem[] = [];

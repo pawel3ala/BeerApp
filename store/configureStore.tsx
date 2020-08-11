@@ -4,12 +4,14 @@ import thunk from "redux-thunk";
 import beersReducer from "./reducers/beers";
 import filtersReducer from "./reducers/filters";
 import selectedBeersReducer from "./reducers/selectedBeer";
+import similarBeersReducer from "./reducers/silimarBeers"
 
 
 export const rootReducer = combineReducers({
     beers: beersReducer,
     filtersReducer,
-    selectedBeersReducer
+    selectedBeersReducer,
+    similarBeersReducer
 });
 
 export type AppState = ReturnType<typeof rootReducer>
