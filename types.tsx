@@ -23,3 +23,10 @@ export interface BeerItem {
   abv: number,
   id: number
 }
+
+export type FiltersConfigObject = {
+  abv_min: number | null,
+  abv_max: number | null,
+  ibu_min: number | null,
+  ibu_max: number | null
+}
