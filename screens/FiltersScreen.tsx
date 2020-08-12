@@ -1,12 +1,11 @@
 import * as React from 'react';
 import { StyleSheet, ScrollView } from 'react-native';
-
-import { Text, View } from '../components/Themed';
+import { View } from '../components/Themed';
 import { Button, Input } from 'react-native-elements'
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { clearFilters, setFilters } from '../store/reducers/filters'
-import { FiltersConfigObject} from '../types'
+import { FiltersConfigObject } from '../types'
 
 export default function TabTwoScreen(props: any) {
 
@@ -24,14 +23,14 @@ export default function TabTwoScreen(props: any) {
         <Button
           title='Apply filter'
           onPress={() => {
-            const filterObj: FiltersConfigObject= {
+            const filterObj: FiltersConfigObject = {
               abv_min: Number(abv_min),
               abv_max: Number(abv_max),
               ibu_min: Number(ibu_min),
               ibu_max: Number(ibu_max),
             }
             dispatch(setFilters(filterObj))
-            navigation.navigate('TabOneScreen')
+            navigation.navigate('BeerListScreen')
           }}
         />
         <Button
@@ -42,13 +41,8 @@ export default function TabTwoScreen(props: any) {
             setIbu_min(null)
             setIbu_max(null)
             dispatch(clearFilters())
-            navigation.navigate('TabOneScreen')
+            navigation.navigate('BeerListScreen')
           }}
-
-        />
-        <Button
-          title='poka'
-          onPress={() => { console.log(abv_min, abv_max, ibu_min, ibu_max) }}
         />
         <Input placeholder='ABV min' value={abv_min?.toString()} onChangeText={value => setAbv_min(value)} />
         <Input placeholder='ABV max' value={abv_max?.toString()} onChangeText={value => setAbv_max(value)} />
@@ -64,14 +58,5 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
-  },
+  }
 });

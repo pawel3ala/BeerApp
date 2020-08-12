@@ -1,8 +1,7 @@
 import { BeerItem } from '../../types'
 import axios from 'axios'
 import { Dispatch } from 'redux'
-import { store } from '../configureStore';
-
+import { similarity } from '../../constants/AppConstants'
 const beersReducerDefaultState: BeerItem[] = [];
 
 const SET_SIMILAR_BEERS = 'SET_SIMILAR_BEERS'
@@ -19,8 +18,6 @@ const setSimilarBeers = (beers: BeerItem[]): SetSimilarBeersAction => ({
     beers
 })
 
-
-
 export const fetchSimilarBeers = (beer: BeerItem, filters: any) => {
     return async (dispatch: Dispatch) => {
         try {
@@ -32,10 +29,10 @@ export const fetchSimilarBeers = (beer: BeerItem, filters: any) => {
             
                 const { abv, ibu } = filters
                 const [abv_gt, abv_lt, ibu_gt, ibu_lt] = [
-                    abv * (1 - likability),
-                    abv * (1 + likability),
-                    ibu * (1 - likability),
-                    ibu * (1 + likability),
+                    abv * (1 - similarity),
+                    abv * (1 + similarity),
+                    ibu * (1 - similarity),
+                    ibu * (1 + similarity),
                 ]
             
                 filtersURLString += `&abv_gt=${Math.floor(abv_gt).toString()}`

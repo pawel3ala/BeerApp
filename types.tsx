@@ -22,7 +22,9 @@ export interface BeerItem {
   image_url: string,
   ibu: number,
   abv: number,
-  id: number
+  id: number,
+  description: string,
+  brewer_tips: string
 }
 
 export type FiltersConfigObject = {
