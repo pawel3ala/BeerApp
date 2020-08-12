@@ -2,6 +2,7 @@ import { BeerItem } from '../../types'
 import axios from 'axios'
 import { Dispatch } from 'redux'
 import { similarity } from '../../constants/AppConstants'
+
 const beersReducerDefaultState: BeerItem[] = [];
 
 const SET_SIMILAR_BEERS = 'SET_SIMILAR_BEERS'
@@ -22,7 +23,6 @@ export const fetchSimilarBeers = (beer: BeerItem, filters: any) => {
     return async (dispatch: Dispatch) => {
         try {
 
-            const likability = 0.1
             const applyFilters = () => {
             
                 let filtersURLString: string = "";
@@ -45,7 +45,7 @@ export const fetchSimilarBeers = (beer: BeerItem, filters: any) => {
             const filtersURLString = applyFilters()
             
             const { data } = await axios.get(`https://api.punkapi.com/v2/beers?${filtersURLString}`)
-            dispatch(setSimilarBeers(data))
+            return dispatch(setSimilarBeers(data))
         } catch (err) {
             console.error(err)
         }

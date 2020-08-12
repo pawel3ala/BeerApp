@@ -1,5 +1,4 @@
 import { FiltersConfigObject } from '../../types'
-import axios from 'axios'
 
 const filtersReducerDefaultState: FiltersConfigObject = {
     abv_min: null,
