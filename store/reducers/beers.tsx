@@ -1,8 +1,7 @@
 import { BeerItem } from '../../types'
 import axios from 'axios'
 import { Dispatch } from 'redux'
-
-const pagesPerPage: number = 12;
+import { beersPerPage } from '../../constants/AppConstants'
 const beersReducerDefaultState: BeerItem[] = [];
 
 const SET_ALL_BEERS = 'SET_ALL_BEERS'
@@ -43,9 +42,8 @@ export const fetchAllBeers = () => {
   return async (dispatch: Dispatch) => {
     try {
       applyFilters()
-      const { data } = await axios.get(`https://api.punkapi.com/v2/beers?page=1&per_page=${pagesPerPage.toString()}${filtersURLString}`)
-      console.log(`https://api.punkapi.com/v2/beers?page=1&per_page=${pagesPerPage.toString()}${filtersURLString}`)
-      dispatch(setAllBeers(data))
+      const { data } = await axios.get(`https://api.punkapi.com/v2/beers?page=1&per_page=${beersPerPage.toString()}${filtersURLString}`)
+      return dispatch(setAllBeers(data))
     } catch (err) {
       console.error(err)
     }
@@ -56,15 +54,15 @@ export const fetchMoreBeers = (pageNumber: number) => {
   return async (dispatch: Dispatch) => {
     try {
       applyFilters()
-      const { data } = await axios.get(`https://api.punkapi.com/v2/beers?page=${pageNumber.toString()}&per_page=${pagesPerPage.toString()}${filtersURLString}`)
-      dispatch(setMoreBeers(data))
+      const { data } = await axios.get(`https://api.punkapi.com/v2/beers?page=${pageNumber.toString()}&per_page=${beersPerPage.toString()}${filtersURLString}`)
+      return dispatch(setMoreBeers(data))
     } catch (err) {
       console.error(err)
     }
   }
 }
 
-const beerReducer = (state = beersReducerDefaultState, action: BeerActionTypes): BeerItem[] => {
+const beersReducer = (state = beersReducerDefaultState, action: BeerActionTypes): BeerItem[] => {
   switch (action.type) {
     case "SET_ALL_BEERS":
       return action.beers;
@@ -75,4 +73,4 @@ const beerReducer = (state = beersReducerDefaultState, action: BeerActionTypes):
   }
 };
 
-export default beerReducer;
+export default beersReducer;

@@ -22,7 +22,7 @@ export const fetchSingleBeer = (beerId: number) => {
     return async (dispatch: Dispatch) => {
         try {
             const { data } = await axios.get(`https://api.punkapi.com/v2/beers/${beerId.toString()}`)
-            dispatch(setSingleBeer(data))
+            return dispatch(setSingleBeer(data))
         } catch (err) {
             console.error(err)
         }

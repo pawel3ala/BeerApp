@@ -4,12 +4,13 @@ export type RootStackParamList = {
 };
 
 export type BottomTabParamList = {
-  TabOne: undefined;
-  TabTwo: undefined;
+  BeerListTab: undefined;
+  FiltersTab: undefined;
 };
 
 export type TabOneParamList = {
-  TabOneScreen: undefined;
+  BeerListScreen: undefined;
+  FiltersScreen: undefined
 };
 
 export type TabTwoParamList = {
@@ -21,7 +22,9 @@ export interface BeerItem {
   image_url: string,
   ibu: number,
   abv: number,
-  id: number
+  id: number,
+  description: string,
+  brewer_tips: string
 }
 
 export type FiltersConfigObject = {
