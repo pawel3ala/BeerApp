@@ -9,11 +9,9 @@ import { store } from '../store/configureStore'
 
 import ListItem from '../components/ListItem';
 import { useState, useEffect } from 'react';
-import axios from 'axios';
 import { BeerItem } from '../types'
 import Modal from 'react-native-modal';
 import { Button } from 'react-native-elements'
-import { Dispatch } from 'redux';
 
 export default function TabOneScreen() {
 
@@ -37,7 +35,6 @@ export default function TabOneScreen() {
       .then(() => setVisibility(true)
       )
   }
-
 
     const renderItem = ({ item }: { item: BeerItem }) => {
       return <ListItem
