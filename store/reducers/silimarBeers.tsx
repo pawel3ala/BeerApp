@@ -19,7 +19,7 @@ const setSimilarBeers = (beers: BeerItem[]): SetSimilarBeersAction => ({
     beers
 })
 
-export const fetchSimilarBeers = (beer: BeerItem, filters: any) => {
+export const fetchSimilarBeers = (beer: BeerItem) => {
     return async (dispatch: Dispatch) => {
         try {
 
@@ -27,7 +27,7 @@ export const fetchSimilarBeers = (beer: BeerItem, filters: any) => {
             
                 let filtersURLString: string = "";
             
-                const { abv, ibu } = filters
+                const { abv, ibu } = beer
                 const [abv_gt, abv_lt, ibu_gt, ibu_lt] = [
                     abv * (1 - similarity),
                     abv * (1 + similarity),

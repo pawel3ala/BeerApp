@@ -9,9 +9,9 @@ import similarBeersReducer from "./reducers/silimarBeers"
 
 export const rootReducer = combineReducers({
     beers: beersReducer,
-    filtersReducer,
-    selectedBeersReducer,
-    similarBeersReducer
+    filtersReducer, // TODO: refactor this
+    selectedBeersReducer, // TODO: refactor this
+    similarBeersReducer // TODO: refactor this
 },);
 
 export type AppState = ReturnType<typeof rootReducer>
