@@ -29,9 +29,9 @@ export default function TabOneScreen() {
 
   const onPress = (item: any) => {
     Promise.all([dispatch(fetchSingleBeer(item.id))])
-      .then(() => { 
+      .then(() => {
         const selectedBeer: BeerItem = store.getState().selectedBeersReducer[0] // TODO: refactor this
-        Promise.all([dispatch(fetchSimilarBeers(selectedBeer))]) 
+        Promise.all([dispatch(fetchSimilarBeers(selectedBeer))])
       })
       .then(() => setVisibility(true)
       )
@@ -55,17 +55,21 @@ export default function TabOneScreen() {
   const popUpModal = (selectedBeer: BeerItem) => {
     return (
       <Modal isVisible={isVisible}>
-        <View>
-          <Text>{selectedBeer && selectedBeer.name}</Text>
-          <Text>{selectedBeer && selectedBeer.description}</Text>
-          <Text>{selectedBeer && selectedBeer.brewer_tips}</Text>
-          <Text>{selectedBeer && selectedBeer.ibu}</Text>
-          <Text>{selectedBeer && selectedBeer.abv}</Text>
-          {selectedBeer && <Image style={{ width: '100%', height: 200 }} source={{ uri: selectedBeer.image_url }} />}
-          <Button title="Click To Close" onPress={() => setVisibility(!isVisible)} />
-          <Text>Similar beers: </Text>
-          <Text>{similarBeers && similarBeers.map((beer: BeerItem) => beer.name)} </Text>
-        </View>
+        {
+          selectedBeer && (
+            <>
+              <Text>{selectedBeer.name}</Text>
+              <Text>{selectedBeer.description}</Text>
+              <Text>{selectedBeer.brewer_tips}</Text>
+              <Text>{selectedBeer.ibu}</Text>
+              <Text>{selectedBeer.abv}</Text>
+              {selectedBeer && <Image style={{ width: '100%', height: 200 }} source={{ uri: selectedBeer.image_url }} />}
+              <Button title="Click To Close" onPress={() => setVisibility(!isVisible)} />
+              <Text>Similar beers: </Text>
+              <Text>{similarBeers.map((beer: BeerItem) => beer.name)} </Text>
+            </>
+          )
+        }
       </Modal>
     )
   }
