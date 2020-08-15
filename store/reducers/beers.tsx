@@ -4,28 +4,17 @@ import { Dispatch } from 'redux'
 import { beersPerPage } from '../../constants/AppConstants'
 const beersReducerDefaultState: BeerItem[] = [];
 
-const SET_ALL_BEERS = 'SET_ALL_BEERS'
-const SET_MORE_BEERS = 'SET_MORE_BEERS'
+const SET_BEERS = 'SET_BEERS';
 
-interface SetAllBeersAction {
-  type: typeof SET_ALL_BEERS,
+interface SetBeersAction {
+  type: typeof SET_BEERS,
   beers: BeerItem[]
 }
 
-interface SetMoreBeersAction {
-  type: typeof SET_MORE_BEERS,
-  beers: BeerItem[]
-}
+type BeerActionTypes = SetBeersAction
 
-type BeerActionTypes = SetAllBeersAction | SetMoreBeersAction
-
-const setAllBeers = (beers: BeerItem[]): SetAllBeersAction => ({
-  type: SET_ALL_BEERS,
-  beers
-})
-
-const setMoreBeers = (beers: BeerItem[]): SetMoreBeersAction => ({
-  type: SET_MORE_BEERS,
+const setBeers = (beers: BeerItem[]): SetBeersAction => ({
+  type: SET_BEERS,
   beers
 })
 
@@ -38,25 +27,13 @@ const applyFilters = () => {
   // filtersURLString += "&ibu_lt=110"
 }
 
-export const fetchAllBeers = () => {
+export const getBeers = (page: number) => {
   return async (dispatch: Dispatch) => {
     try {
-      applyFilters()
-      const { data } = await axios.get(`https://api.punkapi.com/v2/beers?page=1&per_page=${beersPerPage.toString()}${filtersURLString}`)
-      return dispatch(setAllBeers(data))
-    } catch (err) {
-      console.error(err)
+      const { data } = await axios.get(`https://api.punkapi.com/v2/beers?page=${page}&per_page=${beersPerPage.toString()}${filtersURLString}`)
+      return dispatch(setBeers(data))
     }
-  }
-}
-
-export const fetchMoreBeers = (pageNumber: number) => {
-  return async (dispatch: Dispatch) => {
-    try {
-      applyFilters()
-      const { data } = await axios.get(`https://api.punkapi.com/v2/beers?page=${pageNumber.toString()}&per_page=${beersPerPage.toString()}${filtersURLString}`)
-      return dispatch(setMoreBeers(data))
-    } catch (err) {
+    catch (err) {
       console.error(err)
     }
   }
@@ -64,9 +41,7 @@ export const fetchMoreBeers = (pageNumber: number) => {
 
 const beersReducer = (state = beersReducerDefaultState, action: BeerActionTypes): BeerItem[] => {
   switch (action.type) {
-    case "SET_ALL_BEERS":
-      return action.beers;
-    case "SET_MORE_BEERS":
+    case "SET_BEERS":
       return [...state, ...action.beers]
     default:
       return state;

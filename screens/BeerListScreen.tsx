@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { StyleSheet, FlatList, Image } from 'react-native';
 import { Text, View } from '../components/Themed';
-import { fetchAllBeers, fetchMoreBeers } from '../store/reducers/beers'
+import { getBeers } from '../store/reducers/beers'
 import { fetchSingleBeer } from '../store/reducers/selectedBeer'
 import { fetchSimilarBeers } from '../store/reducers/silimarBeers'
 import { useDispatch, useStore } from 'react-redux';
@@ -18,14 +18,16 @@ export default function TabOneScreen() {
   const dispatch = useDispatch();
   const store = useStore()
 
+  useEffect(() => {
+    async function dispatchGetBeers() {
+      await dispatch(getBeers(page))
+    }
+    dispatchGetBeers()
+  }, [page])
+
   const selectedBeer: BeerItem = store.getState().selectedBeersReducer[0] // TODO: refactor this
   const similarBeers: BeerItem[] = store.getState().similarBeersReducer // TODO: refactor this
   const beers: BeerItem[] = store.getState().beers // TODO: refactor this
-
-  useEffect(() => {
-    if (page == 1) dispatch(fetchAllBeers());
-    else dispatch(fetchMoreBeers(page));
-  }, [page])
 
   const onPress = (item: any) => {
     Promise.resolve(dispatch(fetchSingleBeer(item.id)))
