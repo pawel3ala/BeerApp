@@ -4,13 +4,13 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 
 import beersReducer from "./reducers/beers";
 import filtersReducer from "./reducers/filters";
-import selectedBeersReducer from "./reducers/selectedBeer";
+import selectedBeerReducer from "./reducers/selectedBeer";
 import similarBeersReducer from "./reducers/silimarBeers"
 
 export const rootReducer = combineReducers({
     beers: beersReducer,
     filtersReducer, // TODO: refactor this
-    selectedBeersReducer, // TODO: refactor this
+    selectedBeerReducer, // TODO: refactor this
     similarBeersReducer // TODO: refactor this
 },);
 

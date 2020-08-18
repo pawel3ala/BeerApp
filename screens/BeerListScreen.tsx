@@ -4,7 +4,7 @@ import { Text, View } from '../components/Themed';
 import { getBeers } from '../store/reducers/beers'
 import { fetchSingleBeer } from '../store/reducers/selectedBeer'
 import { fetchSimilarBeers } from '../store/reducers/silimarBeers'
-import { useDispatch, useStore } from 'react-redux';
+import { useDispatch, useStore, useSelector } from 'react-redux';
 import ListItem from '../components/ListItem';
 import { useState, useEffect } from 'react';
 import { BeerItem } from '../types'
@@ -25,14 +25,14 @@ export default function TabOneScreen() {
     dispatchGetBeers()
   }, [page])
 
-  const selectedBeer: BeerItem = store.getState().selectedBeersReducer[0] // TODO: refactor this
-  const similarBeers: BeerItem[] = store.getState().similarBeersReducer // TODO: refactor this
-  const beers: BeerItem[] = store.getState().beers // TODO: refactor this
+  const selectedBeer: BeerItem = useSelector(state => state.selectedBeerReducer[0])
+  const similarBeers: BeerItem[] = useSelector(state => state.similarBeersReducer)
+  const beers: BeerItem = useSelector(state => state.beers)
 
   const onPress = (item: any) => {
     Promise.resolve(dispatch(fetchSingleBeer(item.id)))
       .then(() => {
-        const selectedBeer: BeerItem = store.getState().selectedBeersReducer[0] // TODO: refactor this
+        const selectedBeer: BeerItem = store.getState().selectedBeerReducer[0] // TODO: refactor this
         Promise.resolve(dispatch(fetchSimilarBeers(selectedBeer)))
       })
       .then(() => setVisibility(previousVisibility => !previousVisibility)
