@@ -31,10 +31,7 @@ export default function TabOneScreen() {
 
   const handleOnPress = (item: any) => {
     Promise.resolve(dispatch(fetchSingleBeer(item.id)))
-      .then(() => {
-        const selectedBeer: BeerItem = store.getState().selectedBeer // TODO: refactor this
-        Promise.resolve(dispatch(fetchSimilarBeers(selectedBeer)))
-      })
+      .then(({ beer }) => Promise.resolve(dispatch(fetchSimilarBeers(beer))))
       .then(() => setVisibility(previousVisibility => !previousVisibility)
       )
   }
