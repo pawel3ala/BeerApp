@@ -2,7 +2,7 @@ import { BeerItem } from '../../types'
 import axios from 'axios'
 import { Dispatch } from 'redux'
 
-const selectedBeerReducerDefaultState: never[] = [];
+const selectedBeerReducerDefaultState = {};
 
 const SET_SELECTED_BEER = 'SET_SELECTED_BEER'
 

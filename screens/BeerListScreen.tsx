@@ -25,14 +25,14 @@ export default function TabOneScreen() {
     dispatchGetBeers()
   }, [page])
 
-  const selectedBeer: BeerItem = useSelector(state => state.selectedBeerReducer[0])
-  const similarBeers: BeerItem[] = useSelector(state => state.similarBeersReducer)
+  const selectedBeer: BeerItem = useSelector(state => state.selectedBeer)
+  const similarBeers: BeerItem[] = useSelector(state => state.similarBeers)
   const beers: BeerItem = useSelector(state => state.beers)
 
-  const onPress = (item: any) => {
+  const handleOnPress = (item: any) => {
     Promise.resolve(dispatch(fetchSingleBeer(item.id)))
       .then(() => {
-        const selectedBeer: BeerItem = store.getState().selectedBeerReducer[0] // TODO: refactor this
+        const selectedBeer: BeerItem = store.getState().selectedBeer // TODO: refactor this
         Promise.resolve(dispatch(fetchSimilarBeers(selectedBeer)))
       })
       .then(() => setVisibility(previousVisibility => !previousVisibility)
@@ -40,13 +40,15 @@ export default function TabOneScreen() {
   }
 
   const renderItem = ({ item }: { item: BeerItem }) => {
+
+    const { name, image_url, ibu, abv, id } = item
     return <ListItem
-      name={item.name}
-      image_url={item.image_url}
-      ibu={item.ibu}
-      abv={item.abv}
-      id={item.id}
-      onPress={() => { onPress(item) }}
+      name={name}
+      image_url={image_url}
+      ibu={ibu}
+      abv={abv}
+      id={id}
+      onPress={() => { handleOnPress(item) }}
     />
   }
 
