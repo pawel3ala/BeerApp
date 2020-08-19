@@ -5,17 +5,26 @@ import { beersPerPage } from '../../constants/AppConstants'
 const beersReducerDefaultState: BeerItem[] = [];
 
 const SET_BEERS = 'SET_BEERS';
+const CLEAR_BEERS = 'CLEAR_BEERS'
 
 interface SetBeersAction {
   type: typeof SET_BEERS,
   beers: BeerItem[]
 }
 
-type BeerActionTypes = SetBeersAction
+interface SetClearBeers {
+  type: typeof CLEAR_BEERS
+}
+
+type BeerActionTypes = SetBeersAction | SetClearBeers
 
 const setBeers = (beers: BeerItem[]): SetBeersAction => ({
   type: SET_BEERS,
   beers
+})
+
+export const clearBeers = (): SetClearBeers => ({
+  type: CLEAR_BEERS
 })
 
 let filtersURLString = ""
@@ -43,6 +52,8 @@ const beersReducer = (state = beersReducerDefaultState, action: BeerActionTypes)
   switch (action.type) {
     case "SET_BEERS":
       return [...state, ...action.beers]
+    case "CLEAR_BEERS":
+      return beersReducerDefaultState
     default:
       return state;
   }
