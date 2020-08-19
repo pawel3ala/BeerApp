@@ -6,10 +6,11 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { clearFilters, setFilters } from '../store/reducers/filters'
 import { FiltersConfigObject } from '../types'
+import { useNavigation } from '@react-navigation/native';
 
-export default function TabTwoScreen(props: any) {
+export default function TabTwoScreen() {
 
-  const { navigation } = props
+  const { navigate } = useNavigation();
   const dispatch = useDispatch();
 
   const [abv_min, setAbv_min] = useState<String | null>(null)
@@ -30,7 +31,7 @@ export default function TabTwoScreen(props: any) {
               ibu_max: Number(ibu_max),
             }
             dispatch(setFilters(filterObj))
-            navigation.navigate('BeerListScreen')
+            navigate('BeerListScreen')
           }}
         />
         <Button
@@ -41,7 +42,7 @@ export default function TabTwoScreen(props: any) {
             setIbu_min(null)
             setIbu_max(null)
             dispatch(clearFilters())
-            navigation.navigate('BeerListScreen')
+            navigate('BeerListScreen')
           }}
         />
         <Input placeholder='ABV min' value={abv_min?.toString()} onChangeText={value => setAbv_min(value)} />
