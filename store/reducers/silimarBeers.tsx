@@ -3,7 +3,7 @@ import axios from 'axios'
 import { Dispatch } from 'redux'
 import { similarity } from '../../constants/AppConstants'
 
-const beersReducerDefaultState: BeerItem[] = [];
+const similarBeersReducerDefaultState: BeerItem[] = [];
 
 const SET_SIMILAR_BEERS = 'SET_SIMILAR_BEERS'
 
@@ -52,7 +52,7 @@ export const fetchSimilarBeers = (beer: BeerItem) => {
     }
 }
 
-const similarBeersReducer = (state = beersReducerDefaultState, action: SimilarBeersActionTypes): BeerItem[] => {
+const similarBeersReducer = (state = similarBeersReducerDefaultState, action: SimilarBeersActionTypes): BeerItem[] => {
     switch (action.type) {
         case "SET_SIMILAR_BEERS":
             return action.beers;

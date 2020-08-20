@@ -1,52 +1,56 @@
 import * as React from 'react';
 import { StyleSheet, FlatList, Image } from 'react-native';
 import { Text, View } from '../components/Themed';
-import { getBeers } from '../store/reducers/beers'
+import { getBeers, clearBeers } from '../store/reducers/beers'
 import { fetchSingleBeer } from '../store/reducers/selectedBeer'
 import { fetchSimilarBeers } from '../store/reducers/silimarBeers'
-import { useDispatch, useStore } from 'react-redux';
+import { useDispatch, useStore, useSelector } from 'react-redux';
 import ListItem from '../components/ListItem';
 import { useState, useEffect } from 'react';
-import { BeerItem } from '../types'
+import { BeerItem, FiltersConfigObject } from '../types'
 import Modal from 'react-native-modal';
 import { Button } from 'react-native-elements'
+import { useFocusEffect } from '@react-navigation/native';
 
-export default function TabOneScreen() {
+export default function BeerListScreen() {
 
   const [isVisible, setVisibility] = useState(false)
   const [page, setPage] = useState(1)
   const dispatch = useDispatch();
-  const store = useStore()
+
+  const selectedBeer: BeerItem = useSelector(state => state.selectedBeer)
+  const similarBeers: BeerItem[] = useSelector(state => state.similarBeers)
+  const beers: BeerItem = useSelector(state => state.beers)
 
   useEffect(() => {
-    async function dispatchGetBeers() {
-      await dispatch(getBeers(page))
-    }
-    dispatchGetBeers()
+    if (page !== 1) dispatch(getBeers(page))
   }, [page])
 
-  const selectedBeer: BeerItem = store.getState().selectedBeersReducer[0] // TODO: refactor this
-  const similarBeers: BeerItem[] = store.getState().similarBeersReducer // TODO: refactor this
-  const beers: BeerItem[] = store.getState().beers // TODO: refactor this
+  useFocusEffect(React.useCallback(() => {
+    dispatch(getBeers(page))
+    return () => {
+      dispatch(clearBeers())
+      setPage(1)
+    }
+  }, []));
 
-  const onPress = (item: any) => {
+  const handleOnPress = (item: any) => {
     Promise.resolve(dispatch(fetchSingleBeer(item.id)))
-      .then(() => {
-        const selectedBeer: BeerItem = store.getState().selectedBeersReducer[0] // TODO: refactor this
-        Promise.resolve(dispatch(fetchSimilarBeers(selectedBeer)))
-      })
+      .then(({ beer }) => Promise.resolve(dispatch(fetchSimilarBeers(beer))))
       .then(() => setVisibility(previousVisibility => !previousVisibility)
       )
   }
 
   const renderItem = ({ item }: { item: BeerItem }) => {
+
+    const { name, image_url, ibu, abv, id } = item
     return <ListItem
-      name={item.name}
-      image_url={item.image_url}
-      ibu={item.ibu}
-      abv={item.abv}
-      id={item.id}
-      onPress={() => { onPress(item) }}
+      name={name}
+      image_url={image_url}
+      ibu={ibu}
+      abv={abv}
+      id={id}
+      onPress={() => { handleOnPress(item) }}
     />
   }
 
