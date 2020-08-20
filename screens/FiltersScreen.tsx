@@ -18,32 +18,38 @@ export default function TabTwoScreen() {
   const [ibu_min, setIbu_min] = useState<String | null>(null)
   const [ibu_max, setIbu_max] = useState<String | null>(null)
 
+
+  const handleApplyFilterOnPress = () => {
+    const filterObj: FiltersConfigObject = {
+      abv_min: Number(abv_min),
+      abv_max: Number(abv_max),
+      ibu_min: Number(ibu_min),
+      ibu_max: Number(ibu_max),
+    }
+    Promise.resolve(dispatch(setFilters(filterObj)))
+    .then(()=> navigate('BeerListScreen'))
+  }
+
+  const handleClearFiltersOnPress = () => {
+    setAbv_min(null)
+    setAbv_max(null)
+    setIbu_min(null)
+    setIbu_max(null)
+
+    Promise.resolve(dispatch(clearFilters()))
+    .then(()=> navigate('BeerListScreen')) 
+  }
+
   return (
     <View style={styles.container}>
       <ScrollView>
         <Button
           title='Apply filter'
-          onPress={() => {
-            const filterObj: FiltersConfigObject = {
-              abv_min: Number(abv_min),
-              abv_max: Number(abv_max),
-              ibu_min: Number(ibu_min),
-              ibu_max: Number(ibu_max),
-            }
-            dispatch(setFilters(filterObj))
-            navigate('BeerListScreen')
-          }}
+          onPress={handleApplyFilterOnPress}
         />
         <Button
           title='Clear all filters'
-          onPress={() => {
-            setAbv_min(null)
-            setAbv_max(null)
-            setIbu_min(null)
-            setIbu_max(null)
-            dispatch(clearFilters())
-            navigate('BeerListScreen')
-          }}
+          onPress={handleClearFiltersOnPress}
         />
         <Input placeholder='ABV min' value={abv_min?.toString()} onChangeText={value => setAbv_min(value)} />
         <Input placeholder='ABV max' value={abv_max?.toString()} onChangeText={value => setAbv_max(value)} />

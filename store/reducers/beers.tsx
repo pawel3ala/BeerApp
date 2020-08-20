@@ -2,6 +2,8 @@ import { BeerItem } from '../../types'
 import axios from 'axios'
 import { Dispatch } from 'redux'
 import { beersPerPage } from '../../constants/AppConstants'
+import { FiltersConfigObject } from '../../types'
+
 const beersReducerDefaultState: BeerItem[] = [];
 
 const SET_BEERS = 'SET_BEERS';
@@ -27,19 +29,25 @@ export const clearBeers = (): SetClearBeers => ({
   type: CLEAR_BEERS
 })
 
-let filtersURLString = ""
+const applyFilters = (filtersObject: FiltersConfigObject): string => {
 
-const applyFilters = () => {
-  // filtersURLString += "&abv_gt=0"
-  // filtersURLString += "&abv_lt=110"
-  // filtersURLString += "&ibu_gt=0"
-  // filtersURLString += "&ibu_lt=110"
+  let filtersURLString = ''
+  const { abv_max, abv_min, ibu_max, ibu_min } = filtersObject
+
+  if (abv_min) filtersURLString += `&abv_gt=${abv_min}`
+  if (abv_max) filtersURLString += `&abv_lt=${abv_min}`
+  if (ibu_min) filtersURLString += `&ibu_gt=${ibu_min}`
+  if (ibu_max) filtersURLString += `&ibu_lt=${ibu_max}`
+
+  return filtersURLString
 }
 
 export const getBeers = (page: number) => {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: Dispatch, getState: any) => {
     try {
-      const { data } = await axios.get(`https://api.punkapi.com/v2/beers?page=${page}&per_page=${beersPerPage.toString()}${filtersURLString}`)
+      const filtersToApply = getState().filters
+      const filtersURLSuffix = applyFilters(filtersToApply)
+      const { data } = await axios.get(`https://api.punkapi.com/v2/beers?page=${page}&per_page=${beersPerPage.toString()}${filtersURLSuffix}`)
       return dispatch(setBeers(data))
     }
     catch (err) {
